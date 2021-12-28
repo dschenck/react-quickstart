@@ -11,12 +11,18 @@
   "author": "David Schenck",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@handsontable/react": "^10.0.0",
     "clipboard": "^2.0.6",
     "flux": "^4.0.1",
+    "handsontable": "^10.0.0",
     "react": "^16.13.1",
+    "react-datasheet": "^1.4.9",
     "react-datepicker": "^3.6.0",
     "react-dom": "^16.13.1",
     "react-dragula": "^1.1.17",
+    "react-grid-layout": "^1.2.5",
+    "react-redux": "^7.2.5",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
