@@ -44,7 +44,7 @@ class Section extends React.Component {
                     <div class="bg-white p-2 mx-auto my-auto w-1/3">
                         <div>This is a modal</div>
                         <div>
-                            <button onClick={close.bind(this)}>close</button>
+                            <button onClick={() => close().then(console.log("closed modal"))}>close</button>
                         </div>
                     </div>
                 )

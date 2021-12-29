@@ -24,7 +24,7 @@ export default class Component extends React.Component {
 
         return (
             <div class="flex fixed w-full h-full z-40 bg-gray-800 bg-opacity-50">
-                {this.last.render(() => actions.close(this.last.id))}
+                {this.last.render(() => Promise.resolve(actions.close(this.last.id)))}
             </div>
         )
     }
