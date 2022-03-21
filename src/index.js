@@ -1,14 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { PublicRoute, AuthRoute } from './routing'
-import { HashRouter as Router, Link, Route } from 'react-router-dom'
+import React from "react";
+import ReactDOM from "react-dom";
+import { PublicRoute, AuthRoute } from "./routing";
+import { HashRouter as Router, Link, Route } from "react-router-dom";
 
-import './index.css'
+import "./index.css";
 
-import * as Layout from './Layout'
-import * as Pages from './pages'
-import modules from './modules'
-import Session from './contexts/session'
+import * as Layout from "./Layout";
+import * as Pages from "./pages";
+import modules from "./modules";
+import Session from "./contexts/session";
 
 class App extends React.Component {
     render() {
@@ -21,16 +21,57 @@ class App extends React.Component {
                 <Router>
                     <Layout.Navbar />
                     <Layout.Main>
-                        <Route path="/login" exact component={Pages.Authentication.Login} />
-                        <Route path="/register" exact component={Pages.Registration.Register} />
-                        <Route path="/resetting/request" exact component={Pages.Resetting.Request} />
-                        <Route path="/resetting/reset" exact component={Pages.Resetting.Reset} />
-                        <Route path="/resetting/sent" exact component={Pages.Resetting.Sent} />
-                        <Route path="/dashboard" exact component={Pages.Dashboard.View} />
-                        <Route path="/spreadsheet" exact component={Pages.Spreadsheet} />
+                        <Route
+                            path="/login"
+                            exact
+                            component={Pages.Authentication.Login}
+                        />
+                        <Route
+                            path="/register"
+                            exact
+                            component={Pages.Registration.Register}
+                        />
+                        <Route
+                            path="/resetting/request"
+                            exact
+                            component={Pages.Resetting.Request}
+                        />
+                        <Route
+                            path="/resetting/reset"
+                            exact
+                            component={Pages.Resetting.Reset}
+                        />
+                        <Route
+                            path="/resetting/sent"
+                            exact
+                            component={Pages.Resetting.Sent}
+                        />
+                        <Route
+                            path="/dashboard"
+                            exact
+                            component={Pages.Dashboard.View}
+                        />
+                        <Route
+                            path="/spreadsheet"
+                            exact
+                            component={Pages.Spreadsheet}
+                        />
+                        <Route
+                            path="/todos"
+                            exact
+                            component={Pages.todos.Listview}
+                        />
                         <AuthRoute path="/" exact component={Pages.Home} />
-                        <AuthRoute path="/layout" exact component={Pages.Layout} />
-                        <AuthRoute path="/utilities" exact component={Pages.Utilities} />
+                        <AuthRoute
+                            path="/layout"
+                            exact
+                            component={Pages.Layout}
+                        />
+                        <AuthRoute
+                            path="/utilities"
+                            exact
+                            component={Pages.Utilities}
+                        />
                         <Route path="/tree" component={Pages.Tree} />
                         <Route path="/sandbox" component={Pages.Sandbox} />
                         <AuthRoute path="/contact" component={Pages.Contact} />
@@ -38,10 +79,8 @@ class App extends React.Component {
                     <Layout.Footer />
                 </Router>
             </Session.Component>
-        )
+        );
     }
 }
 
-ReactDOM.render(
-    <App />, document.getElementById("root")
-)
+ReactDOM.render(<App />, document.getElementById("root"));
