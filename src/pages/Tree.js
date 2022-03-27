@@ -55,18 +55,21 @@ export default class Page extends React.Component{
     }
     render(){
         return(
-            <div class="grid grid-cols-3 gap-2">
-                <div class="box">
-                    <h1 class="text-xl mb-2 border-b border-gray-200">Library</h1>
-                    <Library strategies={data.strategies} operators={data.operators}/>
-                </div>
-                <div class="box">
-                    <h1 class="text-xl mb-2 border-b border-gray-200">Workbench</h1>
-                    <Workbench tree={this.state.tree} onChange={tree => this.setState({tree})}/>
-                </div>
-                <div class="box">
-                    <h1 class="text-xl mb-2 border-b border-gray-200">JSON</h1>
-                    <pre class="text-xs">{JSON.stringify(this.state.tree.js(), null, 2)}</pre>
+            <div>
+                <h1 class="text-2xl text-gray-600 pb-2">Tree</h1>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="box">
+                        <h1 class="text-xl mb-2 border-b border-gray-200">Library</h1>
+                        <Library strategies={data.strategies} operators={data.operators}/>
+                    </div>
+                    <div class="box">
+                        <h1 class="text-xl mb-2 border-b border-gray-200">Workbench</h1>
+                        <Workbench tree={this.state.tree} onChange={tree => this.setState({tree})}/>
+                    </div>
+                    <div class="box">
+                        <h1 class="text-xl mb-2 border-b border-gray-200">JSON</h1>
+                        <pre class="text-xs">{JSON.stringify(this.state.tree.js(), null, 2)}</pre>
+                    </div>
                 </div>
             </div>
         )

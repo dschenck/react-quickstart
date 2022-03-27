@@ -47,7 +47,7 @@ export default class Workbench extends React.Component{
         })
         return(
             <div class="relative pb-10">
-                <div class={`relative dragula-container rounded min-h-12 z-10 ${children.length == 0 ? 'border-gray-200 border border-dashed' : ''}`} key={uuid.v4()} data-nodetype="workbench" data-node={this.props.tree.path}>
+                <div class={`relative dragula-container rounded z-10 ${children.length == 0 ? 'border-gray-200 border border-dashed' : ''}`} key={uuid.v4()} data-nodetype="workbench" data-node={this.props.tree.path} style={{minHeight:"48px"}}>
                     {children}
                 </div>
             </div>

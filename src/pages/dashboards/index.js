@@ -14,6 +14,17 @@ class Widget extends React.Component {
         });
     }
     render() {
+        const ResizeButton = (props) => {
+            return(
+                <button
+                    class={`${props.selected ? "bg-blue-800 text-white" : ""} px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none`}
+                    onClick={() => this.onResize({ columns:props.columns })}
+                >
+                    {props.columns}
+                </button>
+            )
+        }
+
         return (
             <div
                 class={
@@ -28,36 +39,7 @@ class Widget extends React.Component {
                     <Card.Body>
                         {this.props.params.text}
                         <div class="text-sm w-full mb-2 mt-2">
-                            <button
-                                class="px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none"
-                                onClick={() => this.onResize({ columns: 2 })}
-                            >
-                                2
-                            </button>
-                            <button
-                                class="px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none"
-                                onClick={() => this.onResize({ columns: 3 })}
-                            >
-                                3
-                            </button>
-                            <button
-                                class="px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none"
-                                onClick={() => this.onResize({ columns: 4 })}
-                            >
-                                4
-                            </button>
-                            <button
-                                class="px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none"
-                                onClick={() => this.onResize({ columns: 6 })}
-                            >
-                                6
-                            </button>
-                            <button
-                                class="px-1 border border-gray-100 w-8 h-6 text-center hover:border-gray-200 focus:outline-none"
-                                onClick={() => this.onResize({ columns: 12 })}
-                            >
-                                12
-                            </button>
+                            {[2,3,4,6,9,12].map((c,i) => <ResizeButton key={i} columns={c} selected={this.props.layout.columns == c} />)}
                         </div>
                     </Card.Body>
                     <Card.Footer>{this.props.params.footer}</Card.Footer>
@@ -119,12 +101,14 @@ class View extends React.Component {
         });
 
         return (
-            <div
-                class="mx-auto py-4 flex flex-wrap dragula-container"
-                style={{ maxWidth: "960px" }}
-            >
-                {cards}
-            </div>
+            <React.Fragment>
+                <h1 class="text-2xl text-gray-600 pb-2">Dashboard</h1>
+                <div
+                    class="mx-auto flex flex-wrap dragula-container"
+                >
+                    {cards}
+                </div>
+            </React.Fragment>
         );
     }
 }

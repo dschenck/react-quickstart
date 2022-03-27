@@ -36,10 +36,6 @@ export default class Page extends React.Component{
                             <utils.Case test={false}>This is False</utils.Case>
                             <p>A child without a test will be used as a default value</p>
                         </utils.Switch>
-                        <p class="font-bold">Test 3</p>
-                        <utils.Switch>
-                            <p test={true}>Switch cases can be of any type, so long they have a test prop</p>
-                        </utils.Switch>
                     </div>
                     <div class="box">
                         <h1 class="text-lg font-bold border-b border-gray-200 mb-1">Ternary statements</h1>

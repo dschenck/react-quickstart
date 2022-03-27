@@ -62,19 +62,19 @@ class App extends React.Component {
                             component={Pages.todos.Listview}
                         />
                         <AuthRoute path="/" exact component={Pages.Home} />
-                        <AuthRoute
+                        <Route
                             path="/layout"
                             exact
                             component={Pages.Layout}
                         />
-                        <AuthRoute
+                        <Route
                             path="/utilities"
                             exact
                             component={Pages.Utilities}
                         />
                         <Route path="/tree" component={Pages.Tree} />
                         <Route path="/sandbox" component={Pages.Sandbox} />
-                        <AuthRoute path="/contact" component={Pages.Contact} />
+                        <Route path="/contact" component={Pages.Contact} />
                     </Layout.Main>
                     <Layout.Footer />
                 </Router>

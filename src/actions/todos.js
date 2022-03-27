@@ -3,7 +3,7 @@ import store from "../flux/store";
 
 const index = (store) => () => {
     if (Object.keys(store.state.todos).length != 0) {
-        return store.emit();
+        return Promise.resolve(store.emit());
     }
     return apis.todos.index().then((response) => {
         return store.handle({

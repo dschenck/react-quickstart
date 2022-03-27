@@ -5,10 +5,19 @@ object-assign
 */
 
 /*!
- * clipboard.js v2.0.6
- * https://clipboardjs.com/
- * 
- * Licensed MIT © Zeno Rocha
+ * Pikaday
+ *
+ * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/Pikaday/Pikaday
+ */
+
+/*! @license DOMPurify 2.3.3 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.3.3/LICENSE */
+
+/**
+ * @preserve
+ * Authors: Handsoncode
+ * Last updated: Nov 15, 2017
+ *
+ * Description: Definition file for English - United States language-country.
  */
 
 /** @license React v0.19.1

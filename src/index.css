@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html { 
+html {
     height:100%;
     font-family: 'Lato', sans-serif; 
 }
@@ -16,12 +16,3 @@ body {
 .box {
     @apply bg-white p-2 border border-gray-200 mb-2;
 }
-
-.max-h-40{
-    max-height: 40vh;
-}
-
-.max-h-80{
-    max-height: 80vh;
-}
-

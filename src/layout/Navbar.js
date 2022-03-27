@@ -35,25 +35,28 @@ const Navbar = () => {
                 </div>
                 <div class="w-full flex-grow lg:content-center lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 z-20">
                     <ul class="lg:flex justify-end items-center">
+                            <li class="py-2 lg:py-0">
+                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/layout">layout</Link>
+                            </li>
+                            <li class="py-2 lg:py-0">
+                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/utilities">utilities</Link>
+                            </li>
+                            <li class="py-2 lg:py-0">
+                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/tree">tree builder</Link>
+                            </li>
+                            <li class="py-2 lg:py-0">
+                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/todos">todos</Link>
+                            </li>
+                            <li class="py-2 lg:py-0">
+                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/dashboard">dashboard</Link>
+                            </li>
                         <utils.If test={session}>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/layout">Layout</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/utilities">Utilities</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/tree">Tree</Link>
-                            </li>
                             <li class="py-2 lg:py-0">
                                 <Dropdown.Dropdown>
                                     <button class="text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4 focus:outline-none">
                                         {session && session.user.firstname} <i class="ml-1 text-sm fa fa-caret-down"></i>
                                     </button>
                                     <div class="w-36 shadow-lg bg-white border border-gray-200">
-                                        <Dropdown.Link to="/test" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                            Test
-                                        </Dropdown.Link>
                                         <button class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4"
                                             onClick={actions.authentication.logout}>
                                             logout
@@ -63,11 +66,6 @@ const Navbar = () => {
                             </li>
                         </utils.If>
                         <utils.If test={!session}>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/register">
-                                    register
-                                </Link>
-                            </li>
                             <li class="py-2 lg:py-0">
                                 <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/login">
                                     login

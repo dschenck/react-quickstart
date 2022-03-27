@@ -76,7 +76,7 @@ const Operator = (props) => {
                             drop elements here
                         </div>
                     </utils.If>
-                    <div class="relative dragula-container rounded min-h-12 z-10" data-node={props.node.path} data-nodetype="operator">
+                    <div class="relative dragula-container rounded z-10" data-node={props.node.path} data-nodetype="operator" style={{minHeight:"48px"}}>
                         {children}
                     </div>
                 </div>

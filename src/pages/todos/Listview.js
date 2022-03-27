@@ -82,7 +82,10 @@ export default class Component extends React.Component {
                 });
             })
             .bind(this);
-        actions.todos.index();
+
+        actions.todos.index().catch(() => {
+            this.setState({state:"error"})
+        });
     }
     componentWillUnmount() {
         this.unsubscribe();
@@ -95,7 +98,7 @@ export default class Component extends React.Component {
     }
     render() {
         return (
-            <div class="border-b border-gray-200 px-3 mt-4 bg-white w-1/2 pb-16 mx-auto pt-4">
+            <div class="border-b border-gray-200 px-3 mt-4 bg-white md:w-1/2 pb-16 mx-auto pt-4 mb-4">
                 <h1 class="text-2xl text-gray-600 mb-2">
                     My reactive todo list
                 </h1>
@@ -106,7 +109,7 @@ export default class Component extends React.Component {
                     <h1 class="text-2xl text-gray-600 mb-2">
                         To do list
                     </h1>
-                    {this.state.todos.sort((a, b) => a.completed - b.completed).map((todo) => (
+                    {this.state.todos.sort((a, b) => a.completed > b.completed ? 1 : -1).map((todo) => (
                         <Todo
                             {...todo}
                             key={todo.id}
