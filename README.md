@@ -1,6 +1,6 @@
 # Application template
 
-> A simple react application with a nested drag-and-drop component, designed with tailwindcss
+> A simple react application with lab applets, designed with tailwindcss 3
 
 Demo [here](https://dschenck.github.io/react-quickstart/#tree)
 
