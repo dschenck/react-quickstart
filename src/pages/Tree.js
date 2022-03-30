@@ -13,7 +13,7 @@ export default class Page extends React.Component{
         this.state = {tree: new Tree({children:data.project})}
     }
     componentDidMount(){
-        const drake = dragula({
+        this.drake = dragula({
             isContainer: function (element) {
                 return element.classList.contains('dragula-container');
             }, 
@@ -27,7 +27,7 @@ export default class Page extends React.Component{
                 return ["strategy-template","operator-template"].indexOf(element.dataset.nodetype) != -1
             }
         })
-        drake.on("drop", (element, target, source, sibling) => {
+        this.drake.on("drop", (element, target, source, sibling) => {
             if(!element || !target){
                 return
             }
@@ -52,6 +52,9 @@ export default class Page extends React.Component{
                 return this.setState({tree})
             }
         })
+    }
+    componentWillUnmount(){
+        this.drake.destroy()
     }
     render(){
         return(

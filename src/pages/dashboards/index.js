@@ -59,7 +59,7 @@ class View extends React.Component {
         };
     }
     componentDidMount() {
-        const drake = dragula({
+        this.drake = dragula({
             isContainer: function (element) {
                 return element.classList.contains("dragula-container");
             },
@@ -69,11 +69,14 @@ class View extends React.Component {
             },
         });
 
-        drake.on("drop", (element, target, source, sibling) => {
+        this.drake.on("drop", (element, target, source, sibling) => {
             if (!element || !target) {
                 return;
             }
         });
+    }
+    componentWillUnmount(){
+        this.drake.destroy()
     }
     onChange(event) {
         this.setState((state) => {
@@ -102,7 +105,7 @@ class View extends React.Component {
 
         return (
             <React.Fragment>
-                <h1 class="text-2xl text-gray-600 pb-2">Dashboard</h1>
+                <h1 class="text-2xl text-gray-600 pb-2">Drag, drop and resize dashboard</h1>
                 <div
                     class="mx-auto flex flex-wrap dragula-container"
                 >
