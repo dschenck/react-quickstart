@@ -8,7 +8,7 @@ const Template = (props) => {
         <div data-node={props.name} data-nodetype="operator-template" class="border border-blue-200 mb-2">
             <div class="bg-blue-600 w-full p-2 border-l-4 border-blue-800 bg-opacity-5" >
                 <div class="flex justify-between align-center mb-1">
-                    <p class="">{props.name}</p>
+                    <p class="text-blue-800">{props.name}</p>
                 </div>
             </div>
         </div>
@@ -29,8 +29,8 @@ const Operator = (props) => {
         <div data-node={props.node.path} data-nodetype="operator" class="border border-blue-200 mb-2">
             <div class="bg-blue-600 w-full p-2 border-l-4 border-blue-800 bg-opacity-5" >
                 <div class="flex justify-between align-center mb-1">
-                    <p class="">
-                        <span class="p-1 bg-blue-800 rounded text-white text-xs mr-1">
+                    <p class="text-blue-800">
+                        <span class="font-extrabold p-1 bg-blue-800 rounded text-white text-xs mr-1">
                             {props.node.path.replace(/\//g, ".").slice(1)}
                         </span>
                         {props.node.value.name}

@@ -59,8 +59,8 @@ export default class Page extends React.Component{
     render(){
         return(
             <div>
-                <h1 class="text-2xl text-gray-600 pb-2">Tree</h1>
-                <div class="grid grid-cols-3 gap-2">
+                <h1 class="text-2xl text-gray-600 pb-2">Nested Tree Builder</h1>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                     <div class="box">
                         <h1 class="text-xl mb-2 border-b border-gray-200">Library</h1>
                         <Library strategies={data.strategies} operators={data.operators}/>

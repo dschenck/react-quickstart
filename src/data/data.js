@@ -1,56 +1,58 @@
 const strategies = [
     { "name": "title" },
     { "name": "textbox" },
+    { "name": "markdown"},
     { "name": "chart" },
     { "name": "table" },
-    { "name": "image" }
+    { "name": "image" },
+    { "name": "video"}
 ]
 
 const operators = [
-    { "name": "grid" },
+    { "name": "div" },
+    { "name": "flexbox" },
     { "name": "tabs" },
-    { "name": "section" }
 ]
 
 const project = [{
     type: "operator",
-    name: "Operator R",
+    name: "flexbox",
     children: []
 }, {
     type: "operator",
-    name: "Operator Q",
+    name: "div",
     children: [
         {
             type: "strategy",
-            name: "Strategy A"
+            name: "textbox"
         },
         {
             type: "strategy",
-            name: "Strategy B"
+            name: "chart"
         },
         {
             type: "operator",
-            name: "Operator R",
+            name: "flexbox",
             children: [
                 {
                     type: "strategy",
-                    name: "Strategy C"
+                    name: "table"
                 },
                 {
                     type: "strategy",
-                    name: "Strategy D"
+                    name: "image"
                 },
                 {
                     type: "operator",
-                    name: "Operator S",
+                    name: "div",
                     children: [
                         {
                             type: "strategy",
-                            name: "Strategy E"
+                            name: "video"
                         },
                         {
                             type: "strategy",
-                            name: "Strategy F"
+                            name: "markdown"
                         }
                     ]
                 }
@@ -58,27 +60,27 @@ const project = [{
         },
         {
             type: "operator",
-            name: "Operator R",
+            name: "flexbox",
             children: [
                 {
                     type: "strategy",
-                    name: "Strategy C"
+                    name: "table"
                 },
                 {
                     type: "strategy",
-                    name: "Strategy D"
+                    name: "image"
                 },
                 {
                     type: "operator",
-                    name: "Operator S",
+                    name: "div",
                     children: [
                         {
                             type: "strategy",
-                            name: "Strategy E"
+                            name: "video"
                         },
                         {
                             type: "strategy",
-                            name: "Strategy F"
+                            name: "markdown"
                         }
                     ]
                 }
