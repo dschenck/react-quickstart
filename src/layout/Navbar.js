@@ -13,70 +13,101 @@ const Logo = () => {
     )
 }
 
-const Navbar = () => {
-    const session = React.useContext(Session.context)
-
-    return(
-        <nav class="w-full bg-white border-b border-gray-400 px-4">
-            <div class="w-full container mx-auto flex flex-wrap items-center justify-between py-2">
-                <div class="flex items-center">
-                    <Logo />
-                    <a class="font-bold text-xl"  href="#"> 
-                        Inbox
-                    </a>
-                </div>
-                <div class="block lg:hidden">
-                    <button class="flex items-center px-3 py-2 border border-gray-500 rounded text-gray-500 hover:text-black appearance-none focus:outline-none">
-                        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20">
-                            <title>Menu</title>
-                            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="w-full flex-grow lg:content-center lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 z-20">
-                    <ul class="lg:flex justify-end items-center">
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/layout">layout</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/utilities">utilities</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/tree">tree builder</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/todos">todos</Link>
-                            </li>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/dashboard">dashboard</Link>
-                            </li>
-                        <utils.If test={session}>
-                            <li class="py-2 lg:py-0">
-                                <Dropdown.Dropdown>
-                                    <button class="text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4 focus:outline-none">
-                                        {session && session.user.firstname} <i class="ml-1 text-sm fa fa-caret-down"></i>
-                                    </button>
-                                    <div class="w-36 shadow-lg bg-white border border-gray-200">
-                                        <button class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4"
-                                            onClick={actions.authentication.logout}>
-                                            logout
-                                        </button>
-                                    </div>
-                                </Dropdown.Dropdown>
-                            </li>
-                        </utils.If>
-                        <utils.If test={!session}>
-                            <li class="py-2 lg:py-0">
-                                <Link class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" to="/login">
-                                    login
-                                </Link>
-                            </li>
-                        </utils.If>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+const NavLink = props => {
+    return (
+        <button 
+            class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4" 
+            onClick={() => props.onClick(props.to)}>
+                {props.label}
+        </button>
     )
 }
 
-export default withRouter(Navbar)
+class Navbar extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {open:false}
+    }
+    toggle(){
+        this.setState(state => {
+            return {...state, open:!state.open}
+        })
+    }
+    navigate(route){
+        this.setState(state => {
+            return {...state, open:false}
+        }, () => {
+            return this.props.history.push(route)
+        })
+    }
+    render(){
+        const session = this.props.session
+
+        return(
+            <nav class="w-full bg-white border-b border-gray-400 px-4">
+                <div class="w-full container mx-auto flex flex-wrap items-center justify-between py-2">
+                    <div class="flex items-center">
+                        <Logo />
+                        <a class="font-bold text-xl"  href="#"> 
+                            Inbox
+                        </a>
+                    </div>
+                    <div class="block lg:hidden">
+                        <button class="flex items-center px-3 py-2 border border-gray-500 rounded text-gray-500 hover:text-black appearance-none focus:outline-none"
+                            onClick={() => this.toggle()}>
+                            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20">
+                                <title>Menu</title>
+                                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class={`w-full flex-grow lg:content-center lg:items-center lg:w-auto ${this.state.open ? "" : "hidden"} lg:block mt-2 lg:mt-0 z-20`}>
+                        <ul class="lg:flex justify-end items-center">
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/layout" label="layout" onClick={this.navigate.bind(this)} />
+                                </li>
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/utilities" label="utilities" onClick={this.navigate.bind(this)} />
+                                </li>
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/tree" label="tree builder" onClick={this.navigate.bind(this)} />
+                                </li>
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/todos" label="todos" onClick={this.navigate.bind(this)} />
+                                </li>
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/dashboard" label="dashboard" onClick={this.navigate.bind(this)} />
+                                </li>
+                            <utils.If test={session}>
+                                <li class="py-2 lg:py-0">
+                                    <Dropdown.Dropdown>
+                                        <button 
+                                            class="text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4 focus:outline-none">
+                                            {session && session.user.firstname} <i class="ml-1 text-sm fa fa-caret-down"></i>
+                                        </button>
+                                        <div class="w-36 shadow-lg bg-white border border-gray-200">
+                                            <button class="inline-block text-gray-600 no-underline hover:text-black hover:underline py-2 pl-4"
+                                                onClick={actions.authentication.logout}>
+                                                logout
+                                            </button>
+                                        </div>
+                                    </Dropdown.Dropdown>
+                                </li>
+                            </utils.If>
+                            <utils.If test={!session}>
+                                <li class="py-2 lg:py-0">
+                                    <NavLink to="/login" label="login" onClick={this.navigate.bind(this)} />
+                                </li>
+                            </utils.If>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        )
+    }
+}
+
+export default withRouter((props) => {
+    const session = React.useContext(Session.context)
+    return <Navbar session={session} history={props.history}/>
+})
