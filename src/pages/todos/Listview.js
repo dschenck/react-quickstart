@@ -111,7 +111,15 @@ const Component = (props) => {
             <h1 class="text-2xl text-gray-600 mb-2">To do list</h1>
             {todos.data &&
                todos.data.data
-                  .sort((a, b) => (a.completed > b.completed ? 1 : -1))
+                  .sort((a, b) => {
+                     if (a.completed & !b.completed) {
+                        return 1;
+                     }
+                     if (!a.completed & b.completed) {
+                        return -1;
+                     }
+                     return a.title > b.title ? 1 : -1;
+                  })
                   .map((todo) => (
                      <Todo
                         {...todo}
