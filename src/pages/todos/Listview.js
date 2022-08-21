@@ -2,6 +2,16 @@ import React from "react";
 import store from "../../flux/store";
 import actions from "../../actions";
 
+import {
+   useQuery,
+   useMutation,
+   useQueryClient,
+   QueryClient,
+   QueryClientProvider,
+ } from 'react-query'
+
+  import { ReactQueryDevtools } from 'react-query/devtools'
+
 const Todo = (props) => {
     return (
         <div class="border-b border-gray-200 mb-1">
@@ -68,57 +78,53 @@ class TodoForm extends React.Component {
     }
 }
 
-export default class Component extends React.Component {
-    constructor(props) {
-        super();
-        this.state = { state: "loading", todos: [] };
-    }
-    componentDidMount() {
-        this.unsubscribe = store
-            .subscribe((state) => {
-                this.setState({
-                    state: "ready",
-                    todos: Object.values(state.todos),
-                });
-            })
-            .bind(this);
+const Component = props => {
+    const todos = useQuery("todos", actions.todos.index())
 
-        actions.todos.index().catch(() => {
-            this.setState({state:"error"})
-        });
-    }
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-    onDelete(todo) {
+    const onDelete = (todo) => {
         actions.todos.delete(todo);
     }
-    onChange(todo) {
+    const onChange = (todo) => {
         actions.todos.update(todo);
     }
-    render() {
-        return (
-            <div class="border-b border-gray-200 px-3 mt-4 bg-white md:w-1/2 pb-16 mx-auto pt-4 mb-4">
-                <h1 class="text-2xl text-gray-600 mb-2">
-                    My reactive todo list
-                </h1>
-                <div class="mb-4">
-                    <TodoForm />
-                </div>
-                <div>
-                    <h1 class="text-2xl text-gray-600 mb-2">
-                        To do list
-                    </h1>
-                    {this.state.todos.sort((a, b) => a.completed > b.completed ? 1 : -1).map((todo) => (
-                        <Todo
-                            {...todo}
-                            key={todo.id}
-                            onDelete={this.onDelete}
-                            onChange={this.onChange}
-                        />
-                    ))}
-                </div>
-            </div>
-        );
+
+    if(todos.status == "loading"){
+        return <div>Loading....</div>
     }
+
+    return (
+        <div class="border-b border-gray-200 px-3 mt-4 bg-white md:w-1/2 pb-16 mx-auto pt-4 mb-4">
+            <h1 class="text-2xl text-gray-600 mb-2">
+                My reactive todo list
+            </h1>
+            <div class="mb-4">
+                <TodoForm />
+            </div>
+            <div>
+                <h1 class="text-2xl text-gray-600 mb-2">
+                    To do list
+                </h1>
+                {todos.data && todos.data.data.sort((a, b) => a.completed > b.completed ? 1 : -1).map((todo) => (
+                    <Todo
+                        {...todo}
+                        key={todo.id}
+                        onDelete={onDelete}
+                        onChange={onChange}
+                    />
+                ))}
+            </div>
+        </div>
+    );
+}
+
+const client = new QueryClient()
+
+export default () => {
+    return(
+        <QueryClientProvider client={client}>
+            <Component />
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+    )
+    
 }
