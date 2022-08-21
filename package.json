@@ -16,6 +16,7 @@
     "clipboard": "^2.0.6",
     "flux": "^4.0.1",
     "handsontable": "^10.0.0",
+    "prettier": "^2.7.1",
     "react": "^16.13.1",
     "react-datasheet": "^1.4.9",
     "react-datepicker": "^3.6.0",

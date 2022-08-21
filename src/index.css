@@ -1,18 +1,18 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url("https://fonts.googleapis.com/css?family=Lato");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html {
-    height:100%;
-    font-family: 'Lato', sans-serif; 
+   height: 100%;
+   font-family: "Lato", sans-serif;
 }
 
-body { 
-    height:100%;
+body {
+   height: 100%;
 }
 
 .box {
-    @apply bg-white p-2 border border-gray-200 mb-2;
+   @apply bg-white p-2 border border-gray-200 mb-2;
 }

@@ -9,7 +9,6 @@ import {
    FaCheck,
    FaTrash,
    FaCaretDown,
-   FaCircleNotch,
 } from "react-icons/fa";
 
 import { GrRotateLeft } from "react-icons/gr";
@@ -25,6 +24,5 @@ export default {
    FaCheck,
    FaTrash,
    FaCaretDown,
-   FaCircleNotch,
    GrRotateLeft,
 };

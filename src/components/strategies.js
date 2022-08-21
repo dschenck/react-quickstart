@@ -38,7 +38,10 @@ const Strategy = (props) => {
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
-                           props.handle({ name: "move-up", node: props.node })
+                           props.handle({
+                              name: "move-up",
+                              node: props.node,
+                           })
                         }
                      >
                         <icons.FaArrowUp />
@@ -48,7 +51,10 @@ const Strategy = (props) => {
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
-                           props.handle({ name: "move-down", node: props.node })
+                           props.handle({
+                              name: "move-down",
+                              node: props.node,
+                           })
                         }
                      >
                         <icons.FaArrowDown />
@@ -57,7 +63,10 @@ const Strategy = (props) => {
                   <button
                      class="text-sm p-1 text-gray-400 hover:text-gray-800"
                      onClick={() =>
-                        props.handle({ name: "delete", node: props.node })
+                        props.handle({
+                           name: "delete",
+                           node: props.node,
+                        })
                      }
                   >
                      <icons.FaTrashAlt />
@@ -65,7 +74,10 @@ const Strategy = (props) => {
                   <button
                      class="text-sm p-1 text-gray-400 hover:text-gray-800"
                      onClick={() =>
-                        props.handle({ name: "duplicate", node: props.node })
+                        props.handle({
+                           name: "duplicate",
+                           node: props.node,
+                        })
                      }
                   >
                      <i class="fas fa-clone"></i>

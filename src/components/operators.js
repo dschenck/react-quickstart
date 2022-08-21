@@ -55,7 +55,10 @@ const Operator = (props) => {
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
-                           props.handle({ name: "collapse", node: props.node })
+                           props.handle({
+                              name: "collapse",
+                              node: props.node,
+                           })
                         }
                      >
                         <icons.FaMinus />
@@ -64,7 +67,10 @@ const Operator = (props) => {
                         <button
                            class="text-sm p-1 text-gray-400 hover:text-gray-800"
                            onClick={() =>
-                              props.handle({ name: "expand", node: props.node })
+                              props.handle({
+                                 name: "expand",
+                                 node: props.node,
+                              })
                            }
                         >
                            <icons.FaPlus />
@@ -75,7 +81,10 @@ const Operator = (props) => {
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
-                           props.handle({ name: "move-up", node: props.node })
+                           props.handle({
+                              name: "move-up",
+                              node: props.node,
+                           })
                         }
                      >
                         <icons.FaArrowUp />
@@ -85,7 +94,10 @@ const Operator = (props) => {
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
-                           props.handle({ name: "move-down", node: props.node })
+                           props.handle({
+                              name: "move-down",
+                              node: props.node,
+                           })
                         }
                      >
                         <icons.FaArrowDown />
@@ -94,7 +106,10 @@ const Operator = (props) => {
                   <button
                      class="text-sm p-1 text-gray-400 hover:text-gray-800"
                      onClick={() =>
-                        props.handle({ name: "delete", node: props.node })
+                        props.handle({
+                           name: "delete",
+                           node: props.node,
+                        })
                      }
                   >
                      <icons.FaTrashAlt />
@@ -102,7 +117,10 @@ const Operator = (props) => {
                   <button
                      class="text-sm p-1 text-gray-400 hover:text-gray-800"
                      onClick={() =>
-                        props.handle({ name: "duplicate", node: props.node })
+                        props.handle({
+                           name: "duplicate",
+                           node: props.node,
+                        })
                      }
                   >
                      <i class="fas fa-clone"></i>

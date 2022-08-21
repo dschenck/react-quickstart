@@ -21,7 +21,10 @@ const Todo = (props) => {
                <button
                   class="mr-1 px-2 text-gray-300 hover:text-green-700 focus:outline-none"
                   onClick={() =>
-                     props.onChange({ ...props, completed: !props.completed })
+                     props.onChange({
+                        ...props,
+                        completed: !props.completed,
+                     })
                   }
                >
                   {props.completed ? <icons.GrRotateLeft /> : <icons.FaCheck />}

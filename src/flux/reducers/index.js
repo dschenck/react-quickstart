@@ -5,6 +5,6 @@ import session from "./session";
 import todos from "./todos";
 
 export default combine({
-    session,
-    todos,
+   session,
+   todos,
 });

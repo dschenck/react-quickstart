@@ -1,7 +1,7 @@
-import actions   from './actions'
-import Component from './components'
+import actions from "./actions";
+import Component from "./components";
 
-export default { 
-    actions, 
-    Component
-}
+export default {
+   actions,
+   Component,
+};

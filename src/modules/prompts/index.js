@@ -1,10 +1,10 @@
-import actions from './actions'
-import Component from './components'
-import constants from './constants'
+import actions from "./actions";
+import Component from "./components";
+import constants from "./constants";
 
 export default {
-    actions,
-    ...actions,
-    Component,
-    ...constants
-}
+   actions,
+   ...actions,
+   Component,
+   ...constants,
+};

@@ -17,7 +17,10 @@ class Page extends React.Component {
    }
    onChange(e) {
       this.setState((state) => {
-         return { value: { ...state.value, [e.name]: e.value }, dirty: true };
+         return {
+            value: { ...state.value, [e.name]: e.value },
+            dirty: true,
+         };
       });
    }
    onBlur(e) {
