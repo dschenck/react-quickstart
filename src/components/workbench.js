@@ -1,70 +1,78 @@
 import React from "react";
 import uuid from "uuid";
-import strategies from "./strategies";
-import operators from "./operators";
+import Block from "./blocks";
 
 export default class Workbench extends React.Component {
    handle(event) {
       if (event.name == "collapse") {
-         event.node.value.collapsed = true;
-         return this.props.onChange(this.props.tree);
+         return this.props.onChange(
+            this.props.tree.map((node) => {
+               if (node.meta.id == event.node.meta.id) {
+                  return node.transform((node, Node) => {
+                     return Node(node.value, {
+                        ...node.meta,
+                        collapsed: true,
+                     });
+                  });
+               }
+               return node;
+            })
+         );
       }
       if (event.name == "expand") {
-         event.node.value.collapsed = false;
-         return this.props.onChange(this.props.tree);
+         return this.props.onChange(
+            this.props.tree.map((node) => {
+               if (node.meta.id == event.node.meta.id) {
+                  return node.transform((node, Node) => {
+                     return Node(node.value, {
+                        ...node.meta,
+                        collapsed: false,
+                     });
+                  });
+               }
+               return node;
+            })
+         );
       }
       if (event.name == "delete") {
-         event.node.delete();
-         return this.props.onChange(this.props.tree);
+         return this.props.onChange(this.props.tree.delete(event.node));
       }
       if (event.name == "move-up") {
-         if (event.node.left) {
-            const siblings = event.node.siblings;
-            siblings.splice(
-               event.node.index - 1,
-               0,
-               siblings.splice(event.node.index, 1)[0]
-            );
-            return this.props.onChange(this.props.tree);
-         }
+         return this.props.onChange(
+            this.props.tree.move(event.node, event.node.parent, event.node.left)
+         );
       }
       if (event.name == "move-down") {
-         if (event.node.right) {
-            const siblings = event.node.siblings;
-            siblings.splice(
-               event.node.index + 1,
-               0,
-               siblings.splice(event.node.index, 1)[0]
-            );
-            return this.props.onChange(this.props.tree);
-         }
+         return this.props.onChange(
+            this.props.tree.move(
+               event.node,
+               event.node.parent,
+               event.node.right
+            )
+         );
       }
       if (event.name == "duplicate") {
-         event.node.parent.insert(event.node.clone(), event.node.index + 1);
-         return this.props.onChange(this.props.tree);
+         return this.props.onChange(
+            this.props.tree.map((node) => {
+               if (node.meta.id == event.node.parent.meta.id) {
+                  return node.insert(event.node.clone(), event.node.index + 1);
+               }
+               return node;
+            })
+         );
       }
    }
    render() {
       const children = this.props.tree.children.map((child, i) => {
-         if (child.value.type == "strategy") {
-            return (
-               <strategies.Strategy
-                  node={child}
-                  key={uuid.v4()}
-                  handle={this.handle.bind(this)}
-               />
-            );
-         }
-         if (child.value.type == "operator") {
-            return (
-               <operators.Operator
-                  node={child}
-                  key={uuid.v4()}
-                  handle={this.handle.bind(this)}
-               />
-            );
-         }
+         return (
+            <Block
+               node={child}
+               key={uuid.v4()}
+               handle={this.handle.bind(this)}
+            />
+         );
       });
+
       return (
          <div class="relative pb-10">
             <div
@@ -75,6 +83,7 @@ export default class Workbench extends React.Component {
                }`}
                key={uuid.v4()}
                data-nodetype="workbench"
+               data-id={this.props.tree.meta.id}
                data-node={this.props.tree.path}
                style={{ minHeight: "48px" }}
             >

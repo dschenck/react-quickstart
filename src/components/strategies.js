@@ -23,6 +23,7 @@ const Strategy = (props) => {
       <div
          data-node={props.node.path}
          data-nodetype="strategy"
+         data-id={props.node.meta.id}
          class="border border-green-400 mb-2"
       >
          <div class="bg-green-600 w-full p-2 border-l-4 border-green-600 bg-opacity-10">
@@ -80,7 +81,7 @@ const Strategy = (props) => {
                         })
                      }
                   >
-                     <i class="fas fa-clone"></i>
+                     <icons.FaCopy />
                   </button>
                </div>
             </div>

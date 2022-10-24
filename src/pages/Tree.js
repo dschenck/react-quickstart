@@ -42,40 +42,64 @@ export default class Page extends React.Component {
                element.dataset.nodetype
             ) != -1
          ) {
-            const tree = this.state.tree.clone();
-            tree
-               .get(element.dataset.node)
-               .move(
-                  target.dataset.node,
-                  sibling === null ? null : tree.get(sibling.dataset.node).index
-               );
-            return this.setState({ tree });
+            return this.setState((state) => {
+               return {
+                  tree: state.tree.move(
+                     state.tree.find(
+                        (node) => node.meta.id == element.dataset.id
+                     ),
+                     state.tree.find(
+                        (node) => node.meta.id == target.dataset.id
+                     ),
+                     sibling
+                        ? state.tree.find(
+                             (node) => node.meta.id == sibling.dataset.id
+                          )
+                        : undefined
+                  ),
+               };
+            });
          }
          if (element.dataset.nodetype == "strategy-template") {
-            const tree = this.state.tree.clone();
-            const node = { type: "strategy", name: element.dataset.node };
-            tree
-               .get(target.dataset.node)
-               .insert(
-                  node,
-                  sibling === null ? null : tree.get(sibling.dataset.node).index
-               );
-            return this.setState({ tree });
+            return this.setState({
+               tree: this.state.tree.map((child) => {
+                  if (child.meta.id == target.dataset.id) {
+                     return child.insert(
+                        {
+                           type: "strategy",
+                           name: element.dataset.node,
+                        },
+                        sibling
+                           ? child.find(
+                                (node) => node.meta.id == sibling.dataset.id
+                             ).index
+                           : undefined
+                     );
+                  }
+                  return child;
+               }),
+            });
          }
          if (element.dataset.nodetype == "operator-template") {
-            const tree = this.state.tree.clone();
-            const node = {
-               type: "operator",
-               name: element.dataset.node,
-               children: [],
-            };
-            tree
-               .get(target.dataset.node)
-               .insert(
-                  node,
-                  sibling === null ? null : tree.get(sibling.dataset.node).index
-               );
-            return this.setState({ tree });
+            return this.setState({
+               tree: this.state.tree.map((child) => {
+                  if (child.meta.id == target.dataset.id) {
+                     return child.insert(
+                        {
+                           type: "operator",
+                           name: element.dataset.node,
+                           children: [],
+                        },
+                        sibling
+                           ? child.find(
+                                (node) => node.meta.id == sibling.dataset.id
+                             ).index
+                           : undefined
+                     );
+                  }
+                  return child;
+               }),
+            });
          }
       });
    }
