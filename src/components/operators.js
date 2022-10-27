@@ -7,7 +7,7 @@ import Block from "./blocks";
 const Template = (props) => {
    return (
       <div
-         data-node={props.name}
+         data-nodename={props.name}
          data-nodetype="operator-template"
          class="border border-blue-200 mb-2"
       >
@@ -27,9 +27,9 @@ const Operator = (props) => {
 
    return (
       <div
-         data-node={props.node.path}
+         data-path={props.node.path}
          data-nodetype="operator"
-         data-id={props.node.meta.id}
+         data-id={props.node.value.meta.id}
          class="border border-blue-200 mb-2"
       >
          <div class="bg-blue-600 w-full p-2 border-l-4 border-blue-800 bg-opacity-5">
@@ -41,7 +41,7 @@ const Operator = (props) => {
                   {props.node.value.name}
                </p>
                <div class="flex">
-                  <utils.If test={!props.node.meta.collapsed}>
+                  <utils.If test={!props.node.value.meta?.collapsed}>
                      <button
                         class="text-sm p-1 text-gray-400 hover:text-gray-800"
                         onClick={() =>
@@ -117,7 +117,11 @@ const Operator = (props) => {
                   </button>
                </div>
             </div>
-            <div class={`${props.node.meta.collapsed ? "hidden" : "relative"}`}>
+            <div
+               class={`${
+                  props.node.value.meta?.collapsed ? "hidden" : "relative"
+               }`}
+            >
                <utils.If test={children.length == 0}>
                   <div class="absolute border border-gray-200 border-dashed w-full h-full text-gray-400 text-center text-sm align-middle p-4 z-0">
                      drop elements here
@@ -125,8 +129,8 @@ const Operator = (props) => {
                </utils.If>
                <div
                   class="relative dragula-container rounded z-10"
-                  data-node={props.node.path}
-                  data-id={props.node.meta.id}
+                  data-path={props.node.path}
+                  data-id={props.node.value.meta.id}
                   data-nodetype="operator"
                   style={{ minHeight: "48px" }}
                >

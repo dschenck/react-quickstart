@@ -5,7 +5,7 @@ import icons from "../components/icons";
 const Template = (props) => {
    return (
       <div
-         data-node={props.name}
+         data-nodename={props.name}
          data-nodetype="strategy-template"
          class="border border-green-400 mb-2"
       >
@@ -21,9 +21,9 @@ const Template = (props) => {
 const Strategy = (props) => {
    return (
       <div
-         data-node={props.node.path}
+         data-path={props.node.path}
          data-nodetype="strategy"
-         data-id={props.node.meta.id}
+         data-id={props.node.value.meta.id}
          class="border border-green-400 mb-2"
       >
          <div class="bg-green-600 w-full p-2 border-l-4 border-green-600 bg-opacity-10">

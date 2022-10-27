@@ -7,10 +7,16 @@ import Library from "../components/library";
 import Workbench from "../components/workbench";
 import data from "../data/data";
 
+import * as uuid from "uuid";
+
 export default class Page extends React.Component {
    constructor() {
       super();
-      this.state = { tree: new Tree({ children: data.project }) };
+      this.state = {
+         tree: new Tree({ children: data.project }).map((child) => {
+            return { ...child.value, meta: { id: uuid.v4() } };
+         }),
+      };
    }
    componentDidMount() {
       this.drake = dragula({
@@ -23,7 +29,7 @@ export default class Page extends React.Component {
             ) {
                return false;
             }
-            return !target.dataset.node.startsWith(element.dataset.node);
+            return !target.dataset.path.startsWith(element.dataset.path);
          },
          copy: (element, source) => {
             return (
@@ -46,14 +52,14 @@ export default class Page extends React.Component {
                return {
                   tree: state.tree.move(
                      state.tree.find(
-                        (node) => node.meta.id == element.dataset.id
+                        (node) => node.value.meta.id == element.dataset.id
                      ),
                      state.tree.find(
-                        (node) => node.meta.id == target.dataset.id
+                        (node) => node.value.meta.id == target.dataset.id
                      ),
                      sibling
                         ? state.tree.find(
-                             (node) => node.meta.id == sibling.dataset.id
+                             (node) => node.value.meta.id == sibling.dataset.id
                           )
                         : undefined
                   ),
@@ -63,15 +69,17 @@ export default class Page extends React.Component {
          if (element.dataset.nodetype == "strategy-template") {
             return this.setState({
                tree: this.state.tree.map((child) => {
-                  if (child.meta.id == target.dataset.id) {
+                  if (child.value.meta.id == target.dataset.id) {
                      return child.insert(
                         {
                            type: "strategy",
-                           name: element.dataset.node,
+                           name: element.dataset.nodename,
+                           meta: { id: uuid.v4() },
                         },
                         sibling
                            ? child.find(
-                                (node) => node.meta.id == sibling.dataset.id
+                                (node) =>
+                                   node.value.meta.id == sibling.dataset.id
                              ).index
                            : undefined
                      );
@@ -83,16 +91,18 @@ export default class Page extends React.Component {
          if (element.dataset.nodetype == "operator-template") {
             return this.setState({
                tree: this.state.tree.map((child) => {
-                  if (child.meta.id == target.dataset.id) {
+                  if (child.value.meta.id == target.dataset.id) {
                      return child.insert(
                         {
                            type: "operator",
-                           name: element.dataset.node,
+                           name: element.dataset.nodename,
                            children: [],
+                           meta: { id: uuid.v4() },
                         },
                         sibling
                            ? child.find(
-                                (node) => node.meta.id == sibling.dataset.id
+                                (node) =>
+                                   node.value.meta.id == sibling.dataset.id
                              ).index
                            : undefined
                      );
@@ -105,6 +115,69 @@ export default class Page extends React.Component {
    }
    componentWillUnmount() {
       this.drake.destroy();
+   }
+   onChange(tree) {
+      return this.setState({ tree });
+   }
+   handle(event) {
+      if (event.name == "collapse") {
+         return this.onChange(
+            this.state.tree.map((node) => {
+               if (node == event.node) {
+                  return {
+                     ...node.value,
+                     meta: { ...node.value.meta, collapsed: true },
+                  };
+               }
+               return node;
+            })
+         );
+      }
+      if (event.name == "expand") {
+         return this.onChange(
+            this.state.tree.map((node) => {
+               if (node == event.node) {
+                  return {
+                     ...node.value,
+                     meta: { ...node.value.meta, collapsed: false },
+                  };
+               }
+               return node;
+            })
+         );
+      }
+      if (event.name == "delete") {
+         return this.onChange(this.state.tree.delete(event.node));
+      }
+      if (event.name == "move-up") {
+         return this.onChange(
+            this.state.tree.move(event.node, event.node.parent, event.node.left)
+         );
+      }
+      if (event.name == "move-down") {
+         return this.onChange(
+            this.state.tree.move(
+               event.node,
+               event.node.parent,
+               event.node.right
+            )
+         );
+      }
+      if (event.name == "duplicate") {
+         return this.onChange(
+            this.state.tree.map((node) => {
+               if (node == event.node.parent) {
+                  return node.insert(
+                     event.node.update({
+                        meta: { ...event.node.value.meta, id: uuid.v4() },
+                     }),
+                     event.node.index + 1
+                  );
+               }
+               return node;
+            })
+         );
+      }
    }
    render() {
       return (
@@ -124,13 +197,22 @@ export default class Page extends React.Component {
                   </h1>
                   <Workbench
                      tree={this.state.tree}
-                     onChange={(tree) => this.setState({ tree })}
+                     handle={this.handle.bind(this)}
                   />
                </div>
                <div class="box">
                   <h1 class="text-xl mb-2 border-b border-gray-200">JSON</h1>
                   <pre class="text-xs">
-                     {JSON.stringify(this.state.tree.js(), null, 2)}
+                     {JSON.stringify(
+                        this.state.tree
+                           .map((node) => {
+                              const { meta, ...value } = node.value;
+                              return value;
+                           })
+                           .js(),
+                        null,
+                        2
+                     )}
                   </pre>
                </div>
             </div>

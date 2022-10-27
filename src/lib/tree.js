@@ -1,27 +1,21 @@
-import uuid from "uuid";
-
 export default class Node {
-   constructor(value, meta, parent) {
+   constructor(value, parent) {
       if (value instanceof Node) {
          this.value = {
             ...value.value,
             children: value.children
-               ? value.children.map((child) => new Node(child, {}, this))
+               ? value.children.map((child) => new Node(child, this))
                : undefined,
          };
-         this.meta = { id: uuid.v4(), ...value.meta, ...meta };
       } else {
          if (value.children) {
             this.value = {
                ...value,
-               children: value.children.map(
-                  (child) => new Node(child, {}, this)
-               ),
+               children: value.children.map((child) => new Node(child, this)),
             };
          } else {
             this.value = value;
          }
-         this.meta = { id: uuid.v4(), ...meta };
       }
       this.parent = parent;
    }
@@ -69,7 +63,8 @@ export default class Node {
       return 1 + this.descendants.length;
    }
    get height() {
-      if (!this.children) return 0;
+      if (!this.children) return 1;
+
       return (
          1 +
          this.children.reduce((acc, child) => {
@@ -120,86 +115,73 @@ export default class Node {
          path.split("/").slice(1).join("/")
       );
    }
+   update(value) {
+      return new Node({ ...this.value, ...value });
+   }
    clone() {
       if (this.children) {
-         return new Node(
-            {
-               ...this.value,
-               children: this.children.map((child) => child.clone()),
-            },
-            { ...this.meta, id: uuid.v4() }
-         );
+         return new Node({
+            ...this.value,
+            children: this.children.map((child) => child.clone()),
+         });
       }
-      return new Node(this.value, { ...this.meta, id: uuid.v4() });
+      return new Node(this.value);
    }
 
    push(child) {
       if (!this.children) {
          throw new Error("Node has no children");
       }
-      return new Node(
-         { ...this.value, children: [...this.children, child] },
-         this.meta
-      );
-   }
-
-   pop() {
-      return new Node(this.children.pop(), this.meta);
+      return new Node({ ...this.value, children: [...this.children, child] });
    }
 
    insert(child, index) {
       if (!this.children) {
          throw new Error("Node has no children");
       }
-      return new Node(
-         {
-            ...this.value,
-            children: [
-               ...this.children.slice(
-                  0,
-                  index === undefined ? this.children.length : index
-               ),
-               child,
-               ...this.children.slice(
-                  index === undefined ? this.children.length : index,
-                  this.children.length
-               ),
-            ],
-         },
-         this.meta
-      );
+      return new Node({
+         ...this.value,
+         children: [
+            ...this.children.slice(
+               0,
+               index === undefined ? this.children.length : index
+            ),
+            child,
+            ...this.children.slice(
+               index === undefined ? this.children.length : index,
+               this.children.length
+            ),
+         ],
+      });
    }
    map(func) {
-      return ((node) => {
-         if (node.children) {
-            return new Node(
-               {
-                  ...node.value,
-                  children: node.children.map((child) => child.map(func)),
-               },
-               node.meta
-            );
+      return ((value) => {
+         if (value.children) {
+            return new Node({
+               ...(value instanceof Node ? value.value : value),
+               children: value.children
+                  .map((child) =>
+                     child instanceof Node ? child : new Node(child)
+                  )
+                  .map((child) => child.map(func)),
+            });
          }
-         return node;
-      })(new Node(func(this)));
-   }
-   transform(func) {
-      //(this, constructor) passed to function
-      return new Node(func(this, (value, meta) => new Node(value, meta)));
+         return value instanceof Node ? value : new Node(value);
+      })(func(this));
    }
    filter(func) {
       if (!func(this)) return;
 
       if (this.children) {
-         return new Node(
-            {
-               ...this.value,
-               children: this.children
-                  .map((child) => child.filter(func))
-                  .filter((child) => child !== undefined),
-            },
-            this.meta
-         );
+         // to do
+         // if all children filter to themselves,
+         // then return this instead of new Node
+         return new Node({
+            ...this.value,
+            children: this.children
+               .map((child) => child.filter(func))
+               .filter((child) => child !== undefined),
+         });
       }
 
       return this;
@@ -233,9 +215,12 @@ export default class Node {
          }
       }
    }
-   //To be removed.... are not immutable methods!
+
    js() {
-      if (!this.children) return { ...this.value };
+      if (!this.children) {
+         const { children, ...value } = this.value;
+         return value;
+      }
 
       return {
          ...this.value,
@@ -253,9 +238,58 @@ export default class Node {
       if (before !== undefined && target.children.indexOf(before) == -1) {
          throw new Error("Before should be a child of the target");
       }
-      return this.delete(node).map((child) => {
-         if (child.meta.id == target.meta.id) {
-            return child.insert(node, before ? before.index : undefined);
+      if (target.ancestors.indexOf(node) != -1) {
+         throw new Error("Target should not be a child of moved node");
+      }
+
+      if (node.parent == target) {
+         return this.map((child) => {
+            if (child == target) {
+               function move(array, from, to) {
+                  const copy = [...array];
+                  copy.splice(
+                     to === undefined ? copy.length - 1 : to,
+                     0,
+                     ...copy.splice(from, 1)
+                  );
+                  return copy;
+               }
+
+               return {
+                  ...child.value,
+                  children: move(
+                     child.children,
+                     node.index,
+                     before && before.index
+                  ),
+               };
+            }
+            return child;
+         });
+      }
+
+      return this.map((child) => {
+         if (child == node.parent) {
+            return {
+               ...child.value,
+               children: child.children.filter((c) => c != node),
+            };
+         }
+         if (child == target) {
+            const insert = (arr, index, item) => [
+               ...arr.slice(0, index),
+               item,
+               ...arr.slice(index),
+            ];
+
+            return {
+               ...child.value,
+               children: insert(
+                  child.children,
+                  before ? before.index : child.children.length,
+                  node
+               ),
+            };
          }
          return child;
       });
