@@ -173,9 +173,6 @@ export default class Node {
       if (!func(this)) return;
 
       if (this.children) {
-         // to do
-         // if all children filter to themselves,
-         // then return this instead of new Node
          return new Node({
             ...this.value,
             children: this.children
@@ -300,5 +297,18 @@ export default class Node {
          throw new Error("Node should be a child of this tree");
       }
       return this.filter((child) => child != node);
+   }
+
+   serialize(func) {
+      if (this.children) {
+         func(
+            {
+               ...this.value,
+               children: this.children.map((child) => child.serialize(func)),
+            },
+            this
+         );
+      }
+      return func(this.value, this);
    }
 }

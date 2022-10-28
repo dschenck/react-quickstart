@@ -168,8 +168,11 @@ export default class Page extends React.Component {
             this.state.tree.map((node) => {
                if (node == event.node.parent) {
                   return node.insert(
-                     event.node.update({
-                        meta: { ...event.node.value.meta, id: uuid.v4() },
+                     event.node.map((node) => {
+                        return {
+                           ...node.value,
+                           meta: { ...node.meta, id: uuid.v4() },
+                        };
                      }),
                      event.node.index + 1
                   );
@@ -209,7 +212,7 @@ export default class Page extends React.Component {
                               const { meta, ...value } = node.value;
                               return value;
                            })
-                           .js(),
+                           .js().children,
                         null,
                         2
                      )}
