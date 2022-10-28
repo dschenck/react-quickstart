@@ -157,13 +157,30 @@ export default class Node {
    map(func) {
       return ((value) => {
          if (value.children) {
+            const children = value.children
+               .map((child) =>
+                  child instanceof Node ? child : new Node(child)
+               )
+               .map((child) => child.map(func));
+
+            // optimization
+            // if value is Node
+            // and all children map to themselves
+            // return value directly
+            if (
+               value instanceof Node &&
+               children.length == value.children.length
+            ) {
+               const flag = children.reduce((acc, child, i) => {
+                  return acc && child == value.children[i];
+               }, true);
+
+               if (flag) return value;
+            }
+
             return new Node({
                ...(value instanceof Node ? value.value : value),
-               children: value.children
-                  .map((child) =>
-                     child instanceof Node ? child : new Node(child)
-                  )
-                  .map((child) => child.map(func)),
+               children,
             });
          }
          return value instanceof Node ? value : new Node(value);
@@ -173,11 +190,24 @@ export default class Node {
       if (!func(this)) return;
 
       if (this.children) {
+         const children = this.children
+            .map((child) => child.filter(func))
+            .filter((child) => child !== undefined);
+
+         // optimization
+         // if all children map to themselves
+         // return this
+         if (children.length == this.children.length) {
+            const flag = children.reduce((acc, child, i) => {
+               return acc && child == this.children[i];
+            }, true);
+
+            if (flag) return this;
+         }
+
          return new Node({
             ...this.value,
-            children: this.children
-               .map((child) => child.filter(func))
-               .filter((child) => child !== undefined),
+            children,
          });
       }
 
