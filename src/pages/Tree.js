@@ -171,7 +171,7 @@ export default class Page extends React.Component {
                      event.node.map((node) => {
                         return {
                            ...node.value,
-                           meta: { ...node.meta, id: uuid.v4() },
+                           meta: { ...node.value.meta, id: uuid.v4() },
                         };
                      }),
                      event.node.index + 1
